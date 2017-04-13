@@ -1,0 +1,25 @@
+*.class
+*.log
+classes
+build
+CVS
+.springBeans
+build.sh
+
+# Eclipse artifacts
+.project
+
+# STS Artifacts
+mvnw
+.mvn/
+mvnw.cmd
+
+# Maven artifacts
+.settings
+bin
+target
+.classpath
+
+# Package Files
+*.jar
+*.war

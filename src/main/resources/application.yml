@@ -1,0 +1,51 @@
+spring:
+  datasource:
+    url: jdbc:as400://c-casdb-dev4.copart.com;prompt=false;naming=system
+    username: E1CASMGT
+    password: kac4adaswa
+    driver-class-name: com.ibm.as400.access.AS400JDBCDriver
+    max-active: 10
+    max-idle: 5
+    initial-size: 1
+
+sqlScript:
+  sqlinHeader: "select
+                e1.EMAIL_ID,
+                e1.COMPANY_CODE,
+                e1.PROCESSED_FLAG,
+                e1.EMAIL_TEMPLATE_ID,
+                e1.PARTY_ID,
+                IfNull(trim(d1.VARIABLE_VALUE),0) as LOTNUMBER,
+                IfNull(trim(d2.VARIABLE_VALUE),' ') as SITESOURCE,
+                trim(et.TEMPLATE) as TEMPLATE,
+                e1.LAST_CHANGE_TS,
+                e1.CREATION_TS,
+                e1.TO_ADDRESS,
+                ' ' as ERRORCODE,
+                ' ' as ERRORTEXT,
+                ' ' as ERROR_CODE
+              from EMAIL e1
+                left outer join EMAIL_TEMPLATE et on et.EMAIL_TEMPLATE_ID = e1.EMAIL_TEMPLATE_ID
+                left outer join EMAIL_DETAIL d1 on d1.EMAIL_ID = e1.EMAIL_ID and
+                                                   d1.VARIABLE_KEY = 'LotNumber'
+                left outer join EMAIL_DETAIL d2 on d2.EMAIL_ID = e1.EMAIL_ID and
+                                                   d2.VARIABLE_KEY = 'SiteSource'
+              where "
+
+  sqlinLotNumber: "trim(d1.VARIABLE_VALUE) = '"
+
+  sqlinEmailTemplateID: "e1.EMAIL_TEMPLATE_ID = "
+
+  sqlinSiteSource: "d2.VARIABLE_KEY = "
+
+  sqlinEmailAdr1: "lower(trim(e1.TO_ADDRESS)) like '%"
+  sqlinEmailAdr2: "%'"
+
+  sqlinBuyerNumber: "e1.PARTY_ID = '"
+
+  sqlinTimeStamp1: "e1.CREATION_TS >= Current_TimeStamp - "
+  sqlinTimeStamp2: " Days"
+  sqlinTimeStamp3: " Hours"
+
+  sqlinFooter: "order by e1.LAST_CHANGE_TS
+                fetch first 50 rows only"
