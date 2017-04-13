@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:as400://c-casdb-dev4.copart.com;prompt=false;naming=system
-    username: E1CASMGT
-    password: kac4adaswa
+    username: 
+    password: 
     driver-class-name: com.ibm.as400.access.AS400JDBCDriver
     max-active: 10
     max-idle: 5
